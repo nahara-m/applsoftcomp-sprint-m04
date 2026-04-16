@@ -8,7 +8,7 @@
 #     "matplotlib>=3.7",
 #     "scipy>=1.11",
 #     "ipython>=8.0",
-#     "drawdata>=0.3.6",
+#     "drawdata==0.5.0",
 #     "anywidget>=0.9",
 # ]
 # ///
@@ -154,17 +154,18 @@ def _(mo):
     The math above lives in 384-dim space, which is impossible to draw.
     The same operation in **2D** is easy to see. Use the widget below:
 
-    - **Draw two clusters** with the first two pens. The first color is
-      treated as the **− pole**, the second as the **+ pole**. If you
-      leave it blank, a preset appears below.
-    - The solid arrow is the **SemAxis**: the unit vector from the − pole
-      centroid to the + pole centroid.
-    - Dashed segments show each point's **projection** onto the axis.
-    - The right panel plots those projections as 1D scores.
-
-    Now imagine that the two colored clusters are your positive and negative
-    *pole words* — the picture on the right is exactly what `score_words`
-    returns in high-dimensional space.
+    - **Draw points** with up to four pens. The **first two colors are the
+      poles** (color 1 = − pole, color 2 = + pole); colors 3 and 4 are
+      optional "test" points that get projected onto the same axis.
+    - Bold **colored arrows** show each pole centroid as a vector from the
+      origin — the SemAxis lives in a vector space.
+    - The **thick black arrow** is the SemAxis itself:
+      $\mathbf{e}_{+} - \mathbf{e}_{-}$, the difference of the two pole
+      centroids.
+    - The right panel shows the 1D distribution of projections for every
+      class — a jittered strip plot with a kernel-density envelope
+      (violin-style). This is what `score_words` returns after reducing
+      the embedding to a single axis.
     """)
     return
 
@@ -176,33 +177,54 @@ def _(ScatterWidget, mo):
     return (widget,)
 
 
-@app.function
+@app.function(hide_code=True)
 def make_preset_clusters(n: int = 25, seed: int = 0):
-    """Two 2-D Gaussian blobs used when the widget is empty."""
+    """Four 2-D Gaussian blobs used when the widget is empty.
+
+    Colors match drawdata's first four pens:
+      1. blue   (#1f77b4) — − pole
+      2. red    (#d62728) — + pole
+      3. green  (#2ca02c) — test points
+      4. orange (#ff7f0e) — test points
+    """
     import numpy as np
     import pandas as pd
 
     rng = np.random.default_rng(seed)
-    neg = rng.normal(loc=[140, 260], scale=[35, 28], size=(n, 2))
-    pos = rng.normal(loc=[360, 140], scale=[35, 28], size=(n, 2))
-    return pd.DataFrame(
-        {
-            "x": list(neg[:, 0]) + list(pos[:, 0]),
-            "y": list(neg[:, 1]) + list(pos[:, 1]),
-            "color": ["#1f77b4"] * n + ["#d62728"] * n,
-        }
-    )
+    clusters = [
+        ("#1f77b4", [140, 260]),
+        ("#d62728", [360, 140]),
+        ("#2ca02c", [240, 320]),
+        ("#ff7f0e", [300, 210]),
+    ]
+
+    xs, ys, cs = [], [], []
+    for color, loc in clusters:
+        pts = rng.normal(loc=loc, scale=[32, 28], size=(n, 2))
+        xs.extend(pts[:, 0].tolist())
+        ys.extend(pts[:, 1].tolist())
+        cs.extend([color] * n)
+
+    return pd.DataFrame({"x": xs, "y": ys, "color": cs})
 
 
-@app.function
+@app.function(hide_code=True)
 def plot_semaxis_2d(df):
-    """2-D scatter with the semaxis line + projections, and a 1-D strip plot.
+    """Interactive SemAxis demo.
 
     df is expected to have columns x, y, color. The first two unique color
-    values are treated as the negative and positive poles respectively.
+    values are treated as the negative and positive poles respectively; any
+    additional colors are shown as "test" classes that get projected onto
+    the same axis.
+
+    Left panel: points + bold arrows from the origin to each pole
+    centroid, plus the thick SemAxis arrow (e_+ − e_−).
+    Right panel: per-class 1-D projection scores rendered as a violin
+    (kernel-density envelope) with jittered dots.
     """
     import numpy as np
     import matplotlib.pyplot as plt
+    from scipy.stats import gaussian_kde
 
     fig, (ax1, ax2) = plt.subplots(
         1, 2, figsize=(12, 5), gridspec_kw={"width_ratios": [2, 1]}
@@ -214,7 +236,7 @@ def plot_semaxis_2d(df):
             a.text(
                 0.5,
                 0.5,
-                "Draw points with two colors, or the preset will appear.",
+                "Draw points with at least two colors, or the preset will appear.",
                 ha="center",
                 va="center",
                 transform=a.transAxes,
@@ -238,7 +260,7 @@ def plot_semaxis_2d(df):
             a.text(
                 0.5,
                 0.5,
-                "Cluster centers coincide — move the clusters apart.",
+                "Pole centroids coincide — move the two pole clusters apart.",
                 ha="center",
                 va="center",
                 transform=a.transAxes,
@@ -247,37 +269,13 @@ def plot_semaxis_2d(df):
             a.set_axis_off()
         return fig
     axis_unit = v / v_len
-    midpoint = (pos_c + neg_c) / 2
 
-    # Scalar projection onto axis (relative to midpoint).
-    t = (pts - midpoint) @ axis_unit
-    proj_xy = midpoint[None, :] + t[:, None] * axis_unit[None, :]
+    # Projections are measured from the ORIGIN (like the real SemAxis algorithm).
+    t = pts @ axis_unit
 
-    # ---- Left: 2D scene ----
-    # Axis as an arrow pointing from − to +, extended past both centers.
-    span = np.array([-1.4, 1.4]) * v_len
-    ep = midpoint[None, :] + span[:, None] * axis_unit[None, :]
-    ax1.annotate(
-        "",
-        xy=ep[1],
-        xytext=ep[0],
-        arrowprops=dict(arrowstyle="->", color="#333", lw=2),
-        zorder=1,
-    )
-
-    # Dashed projection lines.
-    for i in range(len(pts)):
-        ax1.plot(
-            [pts[i, 0], proj_xy[i, 0]],
-            [pts[i, 1], proj_xy[i, 1]],
-            color="#bbb",
-            linestyle="--",
-            linewidth=0.7,
-            zorder=1,
-        )
-
-    # Points.
-    for c in (neg_color, pos_color):
+    # ---- Left: 2-D scene ----
+    # Plot raw points first (all classes, including test ones).
+    for c in colors:
         sub = df[df["color"] == c]
         ax1.scatter(
             sub["x"],
@@ -286,50 +284,120 @@ def plot_semaxis_2d(df):
             s=55,
             edgecolor="white",
             linewidth=0.6,
+            alpha=0.85,
+            zorder=2,
+        )
+
+    # Bold vectors from origin to each pole centroid — emphasises that
+    # embeddings are VECTORS, and that the SemAxis is the *difference* of
+    # two such vectors.
+    for center, c_rgb, lbl in [
+        (neg_c, neg_color, "e₋ (− pole centroid)"),
+        (pos_c, pos_color, "e₊ (+ pole centroid)"),
+    ]:
+        ax1.annotate(
+            "",
+            xy=center,
+            xytext=(0, 0),
+            arrowprops=dict(
+                arrowstyle="-|>",
+                color=c_rgb,
+                lw=3,
+                mutation_scale=22,
+                shrinkA=0,
+                shrinkB=0,
+            ),
+            zorder=3,
+        )
+        ax1.plot([], [], color=c_rgb, lw=3, label=lbl)
+
+    # Thick SemAxis arrow: e_+ − e_−, drawn from neg centroid to pos centroid.
+    ax1.annotate(
+        "",
+        xy=pos_c,
+        xytext=neg_c,
+        arrowprops=dict(
+            arrowstyle="-|>",
+            color="#111",
+            lw=5,
+            mutation_scale=30,
+            shrinkA=0,
+            shrinkB=0,
+        ),
+        zorder=4,
+    )
+    ax1.plot([], [], color="#111", lw=5, label="SemAxis: e₊ − e₋")
+
+    # Mark the origin.
+    ax1.scatter([0], [0], s=60, marker="x", color="#111", linewidths=2, zorder=5)
+    ax1.annotate(
+        "origin",
+        xy=(0, 0),
+        xytext=(6, -10),
+        textcoords="offset points",
+        fontsize=8,
+        color="#444",
+    )
+
+    # Make sure the origin is visible in the viewport.
+    pad_x = max(30.0, 0.1 * (pts[:, 0].max() - pts[:, 0].min()))
+    pad_y = max(30.0, 0.1 * (pts[:, 1].max() - pts[:, 1].min()))
+    ax1.set_xlim(min(0.0, pts[:, 0].min()) - pad_x, max(0.0, pts[:, 0].max()) + pad_x)
+    ax1.set_ylim(min(0.0, pts[:, 1].min()) - pad_y, max(0.0, pts[:, 1].max()) + pad_y)
+    ax1.set_aspect("equal", adjustable="box")
+    ax1.set_xlabel("x")
+    ax1.set_ylabel("y")
+    ax1.set_title("Pole centroids are vectors; the SemAxis is their difference")
+    ax1.legend(loc="best", fontsize=8, frameon=False)
+
+    # ---- Right: 1-D projected scores, per class, as violin + jitter ----
+    rng = np.random.default_rng(0)
+    x_grid = np.linspace(t.min() - 0.5 * t.std(), t.max() + 0.5 * t.std(), 200)
+
+    for i, c in enumerate(colors):
+        mask = color_arr == c
+        ts = t[mask]
+        if ts.size == 0:
+            continue
+
+        # KDE violin (only when we have enough points and variance).
+        if ts.size >= 2 and ts.std() > 1e-6:
+            try:
+                kde = gaussian_kde(ts)
+                density = kde(x_grid)
+                if density.max() > 0:
+                    width = 0.4 * density / density.max()
+                    ax2.fill_between(
+                        x_grid,
+                        i - width,
+                        i + width,
+                        color=c,
+                        alpha=0.25,
+                        linewidth=0,
+                    )
+                    ax2.plot(x_grid, i + width, color=c, lw=1)
+                    ax2.plot(x_grid, i - width, color=c, lw=1)
+            except Exception:
+                pass
+
+        # Jittered strip.
+        jitter = rng.uniform(-0.15, 0.15, size=ts.size)
+        ax2.scatter(
+            ts,
+            np.full_like(ts, i) + jitter,
+            c=c,
+            s=40,
+            edgecolor="white",
+            linewidth=0.5,
             zorder=3,
         )
 
-    # Cluster centroids highlighted as hollow rings.
-    for c_rgb, center, lbl in [
-        (neg_color, neg_c, "− pole centroid"),
-        (pos_color, pos_c, "+ pole centroid"),
-    ]:
-        ax1.scatter(
-            *center,
-            s=380,
-            marker="o",
-            facecolor="none",
-            edgecolor=c_rgb,
-            linewidth=2.5,
-            zorder=4,
-            label=lbl,
-        )
-
-    ax1.set_aspect("equal", adjustable="datalim")
-    ax1.set_xlabel("x")
-    ax1.set_ylabel("y")
-    ax1.set_title("2D points, SemAxis direction, and projections")
-    ax1.legend(loc="best", fontsize=8, frameon=False)
-
-    # ---- Right: 1D projected scores ----
-    rng = np.random.default_rng(0)
-    jitter = rng.uniform(-0.35, 0.35, size=len(t))
-    for c in (neg_color, pos_color):
-        mask = color_arr == c
-        ax2.scatter(
-            t[mask],
-            jitter[mask],
-            c=c,
-            s=55,
-            edgecolor="white",
-            linewidth=0.6,
-        )
-    ax2.axvline(0, color="#444", linewidth=1)
-    ax2.set_ylim(-1.2, 1.2)
-    ax2.set_yticks([])
+    ax2.set_yticks(range(len(colors)))
+    ax2.set_yticklabels([f"class {i + 1}" for i in range(len(colors))], fontsize=9)
     ax2.set_xlabel("projection onto SemAxis  →")
-    ax2.set_title("1D projected scores")
-    for side in ("left", "top", "right"):
+    ax2.set_title("1-D projected scores per class")
+    ax2.set_ylim(-0.7, len(colors) - 0.3)
+    for side in ("top", "right"):
         ax2.spines[side].set_visible(False)
 
     fig.tight_layout()
@@ -625,7 +693,7 @@ def _():
     from sentence_transformers import SentenceTransformer
     from drawdata import ScatterWidget
 
-    return ScatterWidget, SentenceTransformer, mo, np, pd, plt
+    return ScatterWidget, SentenceTransformer, mo, pd, plt
 
 
 if __name__ == "__main__":
