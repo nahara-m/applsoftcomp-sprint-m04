@@ -1,0 +1,267 @@
+city,country,region,lat,lon,population,founded,business_activity
+Algiers,Algeria,Africa,36.75,3.05,3415811,944,Beta-
+Luanda,Angola,Africa,-8.83,13.22,2487444,1575,Gamma-
+Porto-Novo,Benin,Africa,6.48,2.62,234168,,Gamma-
+Gaborone,Botswana,Africa,-24.63,25.9,246325,1965,High Sufficiency
+Diego Garcia,British Indian Ocean Territory,Africa,-7.3,72.4,4202,,High Sufficiency
+Ouagadougou,Burkina Faso,Africa,12.37,-1.52,2453496,1050,Beta
+Gitega,Burundi,Africa,-3.43,29.93,135467,1912,Gamma-
+Yaoundé,Cameroon,Africa,3.85,11.5,2440462,1888,Beta
+Praia,Cape Verde,Africa,14.92,-23.52,159050,1858,Gamma-
+Bangui,Central African Republic,Africa,4.37,18.58,15227,1786,High Sufficiency
+N'Djamena,Chad,Africa,12.1,15.03,1092066,1900,Beta-
+Moroni,Comoros,Africa,-11.7,43.23,85400,,Sufficiency
+Kinshasa,DR Congo,Africa,-4.32,15.3,14565700,1881,Beta-
+Djibouti,Djibouti,Africa,11.58,43.15,603900,1888,Gamma
+Cairo,Egypt,Africa,30.05,31.25,9801536,969,Gamma-
+Ciudad de la Paz,Equatorial Guinea,Africa,1.35,10.49,2000,2021,High Sufficiency
+Asmara,Eritrea,Africa,15.33,38.93,963000,1897,Gamma
+Mbabane,Eswatini,Africa,-26.32,31.13,76218,1902,Sufficiency
+Addis Ababa,Ethiopia,Africa,9.03,38.7,5704000,1886,Gamma
+Libreville,Gabon,Africa,0.38,9.45,899000,1849,Gamma
+Banjul,Gambia,Africa,13.45,-16.57,31356,1816,High Sufficiency
+Accra,Ghana,Africa,5.55,-0.22,1782150,,Beta
+Conakry,Guinea,Africa,9.5,-13.7,1667864,,Beta-
+Bissau,Guinea-Bissau,Africa,11.85,-15.58,492004,1687,Gamma-
+Yamoussoukro,Ivory Coast,Africa,6.82,-5.27,340234,,Gamma-
+Nairobi,Kenya,Africa,-1.28,36.82,5545000,1899,Beta
+Maseru,Lesotho,Africa,-29.32,27.48,343541,1869,Gamma-
+Monrovia,Liberia,Africa,6.3,-10.8,1021762,1822,Beta-
+Tripoli,Libya,Africa,32.88,13.17,30383,,High Sufficiency
+Antananarivo,Madagascar,Africa,-18.92,47.52,1275207,1625,Beta-
+Lilongwe,Malawi,Africa,-13.97,33.78,989318,1902,Gamma
+Bamako,Mali,Africa,12.65,-8.0,4227569,,Beta
+Nouakchott,Mauritania,Africa,18.07,-15.97,1446761,,Beta-
+Port Louis,Mauritius,Africa,-20.15,57.48,149194,1735,Gamma-
+Mamoudzou,Mayotte,Africa,-12.78,45.22,71437,2011,Sufficiency
+Casablanca,Morocco,Africa,33.5731,-7.5898,3215935,,Alpha-
+Rabat,Morocco,Africa,34.02,-6.82,509916,1146,Gamma
+Maputo,Mozambique,Africa,-25.95,32.58,1133200,1781,Gamma
+Windhoek,Namibia,Africa,-22.57,17.08,486169,1840,Gamma-
+Niamey,Niger,Africa,13.52,2.12,1496260,,Beta-
+Abuja,Nigeria,Africa,9.08,7.53,1693400,1828,Beta-
+Brazzaville,Republic of the Congo,Africa,-4.25,15.28,2145783,1880,Beta
+Kigali,Rwanda,Africa,-1.95,30.05,1745555,1907,Beta-
+Saint-Denis,Réunion,Africa,-20.88,55.45,115237,,Gamma-
+Jamestown,"Saint Helena, Ascension and Tristan da Cunha",Africa,-15.93,-5.72,,1995,Sufficiency
+Dakar,Senegal,Africa,14.73,-17.63,1438725,,High Sufficiency
+Victoria,Seychelles,Africa,-4.62,55.45,,,Sufficiency
+Freetown,Sierra Leone,Africa,8.48,-13.23,1055964,1792,Beta-
+Mogadishu,Somalia,Africa,2.07,45.33,2120000,,Beta
+Johannesburg,South Africa,Africa,-26.2041,28.0473,4803262,1886,Alpha
+Pretoria,South Africa,Africa,-25.7,28.22,741651,1855,Beta+
+Juba,South Sudan,Africa,4.85,31.62,500088,1922,Gamma
+Khartoum,Sudan,Africa,15.6,32.53,5345000,,Alpha-
+São Tomé,São Tomé and Príncipe,Africa,0.34,6.73,71868,1485,Sufficiency
+Dodoma,Tanzania,Africa,-6.16,35.75,213636,1906,Gamma-
+Lomé,Togo,Africa,6.14,1.21,2188376,,Beta
+Tunis,Tunisia,Africa,36.8,10.18,602560,,Gamma+
+Kampala,Uganda,Africa,0.32,32.55,1797722,,Gamma
+El Aaiún,Western Sahara,Africa,-13.28,27.14,262791,1938,Gamma-
+Lusaka,Zambia,Africa,-15.42,28.28,2204059,1905,Gamma-
+Harare,Zimbabwe,Africa,-17.82,31.03,2150000,1890,Gamma-
+The Valley,Anguilla,Americas,18.22,-63.05,1067,,High Sufficiency
+Saint John's,Antigua and Barbuda,Americas,17.12,-61.85,110525,1497,Gamma-
+Buenos Aires,Argentina,Americas,-34.58,-58.67,3121707,1580,Alpha-
+Oranjestad,Aruba,Americas,12.52,-70.03,28658,1796,High Sufficiency
+Nassau,Bahamas,Americas,25.08,-77.35,4687,,High Sufficiency
+Bridgetown,Barbados,Americas,13.1,-59.62,652503,,Gamma
+Belmopan,Belize,Americas,17.25,-88.77,20754,1970,High Sufficiency
+Hamilton,Bermuda,Americas,32.28,-64.78,569353,1846,Gamma
+Sucre,Bolivia,Americas,-19.02,-65.26,8098,1892,Gamma
+Brasília,Brazil,Americas,-15.79,-47.88,2996899,1960,Beta
+Rio de Janeiro,Brazil,Americas,-22.9068,-43.1729,6730729,1565,Gamma-
+São Paulo,Brazil,Americas,-23.5505,-46.6333,11904961,1554,Alpha-
+Road Town,British Virgin Islands,Americas,18.42,-64.62,12603,,High Sufficiency
+Ottawa,Canada,Americas,45.42,-75.7,1017449,1855,Beta-
+Toronto,Canada,Americas,43.6532,-79.3832,2794356,1750,Alpha
+Kralendijk,Caribbean Netherlands,Americas,12.14,-68.27,12531,1837,High Sufficiency
+George Town,Cayman Islands,Americas,19.3,-81.38,794313,1786,Gamma
+Santiago,Chile,Americas,-33.45,-70.67,444851,1514,Beta+
+Bogotá,Colombia,Americas,4.71,-74.07,8034649,1538,Beta-
+San José,Costa Rica,Americas,9.93,-84.09,1013240,1777,Beta-
+Havana,Cuba,Americas,23.12,-82.35,2492618,1515,Gamma-
+Willemstad,Curaçao,Americas,12.1,-68.92,150000,1634,Gamma-
+Roseau,Dominica,Americas,15.3,-61.4,16571,,High Sufficiency
+Santo Domingo,Dominican Republic,Americas,18.47,-69.9,2201941,1496,Gamma+
+Quito,Ecuador,Americas,-0.22,-78.5,1763275,1534,Gamma-
+San Salvador,El Salvador,Americas,13.7,-89.2,330543,1525,Gamma+
+Stanley,Falkland Islands,Americas,-51.7,-57.85,33320,,High Sufficiency
+Cayenne,French Guiana,Americas,4.94,-52.33,62675,1664,Sufficiency
+Nuuk,Greenland,Americas,64.18,-51.75,18326,1721,High Sufficiency
+St. George's,Grenada,Americas,32.38,-64.68,33734,1650,High Sufficiency
+Basse-Terre,Guadeloupe,Americas,16.03,-61.73,9417,1643,High Sufficiency
+Guatemala City,Guatemala,Americas,14.62,-90.52,994938,1524,Beta+
+Georgetown,Guyana,Americas,6.8,-58.15,67176,1848,Sufficiency
+Port-au-Prince,Haiti,Americas,18.53,-72.33,987310,1749,Gamma
+Tegucigalpa,Honduras,Americas,14.1,-87.22,850848,1578,Beta+
+Kingston,Jamaica,Americas,17.997,-76.7936,937700,1692,Gamma
+Fort-de-France,Martinique,Americas,14.6,-61.08,75506,,Sufficiency
+Mexico City,Mexico,Americas,19.43,-99.13,9209944,1521,Alpha-
+Plymouth,Montserrat,Americas,16.7,-62.22,9370,1825,High Sufficiency
+Managua,Nicaragua,Americas,12.13,-86.25,973087,1819,Gamma
+Panama City,Panama,Americas,8.97,-79.53,1540000,1519,Alpha-
+Asunción,Paraguay,Americas,-25.28,-57.57,462241,1537,Gamma-
+Lima,Peru,Americas,-12.05,-77.05,9943800,1535,Alpha-
+San Juan,Puerto Rico,Americas,18.47,-66.12,471389,1562,Gamma-
+Gustavia,Saint Barthélemy,Americas,17.88,-62.85,9131,1785,High Sufficiency
+Basseterre,Saint Kitts and Nevis,Americas,17.3,-62.72,12920,1627,High Sufficiency
+Castries,Saint Lucia,Americas,14.0,-61.0,20000,1650,High Sufficiency
+Marigot,Saint Martin,Americas,18.07,-63.08,5700,,High Sufficiency
+Saint-Pierre,Saint Pierre and Miquelon,Americas,46.77,-56.18,3256,,High Sufficiency
+Kingstown,Saint Vincent and the Grenadines,Americas,13.13,-61.22,24518,1722,High Sufficiency
+Philipsburg,Sint Maarten,Americas,18.02,-63.03,1338,,High Sufficiency
+Paramaribo,Suriname,Americas,5.83,-55.17,223757,1613,Gamma-
+Port of Spain,Trinidad and Tobago,Americas,10.65,-61.52,49031,,High Sufficiency
+Cockburn Town,Turks and Caicos Islands,Americas,21.46,-71.14,4100,1681,High Sufficiency
+Chicago,United States,Americas,41.8781,-87.6298,2746388,,Alpha
+Houston,United States,Americas,29.7604,-95.3698,2304580,1836,Alpha-
+Los Angeles,United States,Americas,34.0522,-118.2437,3898747,1781,Alpha
+New York City,United States,Americas,40.7128,-74.006,8804190,1624,Alpha++
+"Washington, D.C.",United States,Americas,38.89,-77.05,689545,1790,Beta+
+Charlotte Amalie,United States Virgin Islands,Americas,18.35,-64.93,14477,1666,High Sufficiency
+Montevideo,Uruguay,Americas,-34.85,-56.17,1302954,1726,Gamma-
+Caracas,Venezuela,Americas,10.48,-66.87,2245744,1567,Gamma-
+Kabul,Afghanistan,Asia,34.52,69.18,5333284,1200,Alpha-
+Yerevan,Armenia,Asia,40.17,44.5,1106300,782 BCE,Beta-
+Baku,Azerbaijan,Asia,40.38,49.87,2300500,,Gamma-
+Manama,Bahrain,Asia,26.23,50.57,297502,1345,Beta
+Dhaka,Bangladesh,Asia,23.72,90.4,16800000,,Gamma-
+Thimphu,Bhutan,Asia,27.47,89.63,114551,1955,Gamma-
+Bandar Seri Begawan,Brunei,Asia,4.88,114.93,50000,,Sufficiency
+Phnom Penh,Cambodia,Asia,11.55,104.92,2129371,1372,Gamma
+Beijing,China,Asia,39.92,116.38,21893095,,Alpha-
+Guangzhou,China,Asia,23.1291,113.2644,18676605,,High Sufficiency
+Shanghai,China,Asia,31.2304,121.4737,24870895,751,Alpha+
+Shenzhen,China,Asia,22.5431,114.0579,17681600,1979,Beta
+Tbilisi,Georgia,Asia,41.68,44.83,1258526,455,Gamma-
+City of Victoria,Hong Kong,Asia,22.267,114.188,,,Sufficiency
+Bengaluru,India,Asia,12.9716,77.5946,12327000,1537,Beta+
+Chennai,India,Asia,13.0827,80.2707,6599000,1639,Beta+
+Delhi,India,Asia,28.7041,77.1025,26495000,500s BCE,Alpha-
+Kolkata,India,Asia,22.5726,88.3639,4496694,,Gamma
+Mumbai,India,Asia,19.076,72.8777,15414288,1507,Alpha
+New Delhi,India,Asia,28.6,77.2,249998,1911,Alpha-
+Jakarta,Indonesia,Asia,-6.17,106.82,10684900,1527,Alpha-
+Tehran,Iran,Asia,35.7,51.42,8693706,1794,Gamma-
+Baghdad,Iraq,Asia,33.33,44.4,8126755,762,Alpha-
+Jerusalem,Israel,Asia,31.77,35.23,936425,,Gamma
+Osaka,Japan,Asia,34.6937,135.5023,2751862,1889,Beta-
+Tokyo,Japan,Asia,35.68,139.75,9640742,1868,Alpha+
+Yokohama,Japan,Asia,35.4437,139.6385,3757630,1889,Beta
+Amman,Jordan,Asia,31.95,35.93,4007526,,Beta
+Astana,Kazakhstan,Asia,51.16,71.45,1239744,1830,Gamma-
+Kuwait City,Kuwait,Asia,29.37,47.97,2989000,1752,Beta+
+Bishkek,Kyrgyzstan,Asia,42.87,74.6,1191000,1825,Beta-
+Vientiane,Laos,Asia,17.97,102.6,1003004,1560,Beta-
+Beirut,Lebanon,Asia,33.87,35.5,2421354,,Beta
+Kuala Lumpur,Malaysia,Asia,3.17,101.7,9000280,1857,Gamma
+Malé,Maldives,Asia,4.17,73.51,252768,6th c.,Gamma-
+Ulan Bator,Mongolia,Asia,47.92,106.91,1515593,1649,Beta-
+Naypyidaw,Myanmar,Asia,19.76,96.07,1160242,2005,Beta-
+Kathmandu,Nepal,Asia,27.72,85.32,845767,723,Gamma
+Pyongyang,North Korea,Asia,39.02,125.75,2863000,,Gamma
+Muscat,Oman,Asia,23.62,58.58,1421409,,Beta
+Islamabad,Pakistan,Asia,33.68,73.05,1014825,1960,Beta-
+Ramallah,Palestine,Asia,31.9,35.2,43880,16th c.,High Sufficiency
+Manila,Philippines,Asia,14.6,120.97,1902590,1571,Alpha-
+Doha,Qatar,Asia,25.28,51.53,1186023,1850,Alpha-
+Riyadh,Saudi Arabia,Asia,24.65,46.7,7009100,1746,Alpha-
+Singapore,Singapore,Asia,1.28,103.85,5866139,1965,Alpha+
+Seoul,South Korea,Asia,37.55,126.98,9668465,1395,Alpha-
+Sri Jayawardenepura Kotte,Sri Lanka,Asia,6.89,79.9,115826,,Gamma-
+Damascus,Syria,Asia,33.5,36.3,2685360,,Beta
+Taipei,Taiwan,Asia,25.03,121.52,2442991,1709,High Sufficiency
+Dushanbe,Tajikistan,Asia,38.55,68.77,1201800,18th c.,Beta-
+Bangkok,Thailand,Asia,13.75,100.52,5676648,1782,Gamma+
+Dili,Timor-Leste,Asia,-8.58,125.6,222323,1520,Gamma-
+Ankara,Turkey,Asia,39.93,32.87,5803482,,Gamma+
+Istanbul,Turkey,Asia,41.0082,28.9784,15655924,1453,Alpha
+Ashgabat,Turkmenistan,Asia,37.95,58.38,1030063,1881,Beta-
+Abu Dhabi,United Arab Emirates,Asia,24.47,54.37,1570000,,Beta
+Tashkent,Uzbekistan,Asia,41.32,69.25,2956384,,Gamma-
+Hanoi,Vietnam,Asia,21.03,105.85,8717600,1010,Gamma-
+Sana'a,Yemen,Asia,15.37,44.19,2957000,,Gamma
+Tirana,Albania,Europe,41.32,19.82,389323,1614,Gamma-
+Andorra la Vella,Andorra,Europe,42.5,1.52,24042,10th c.,High Sufficiency
+Vienna,Austria,Europe,48.2,16.37,2028289,2th c. BCE,High Sufficiency
+Minsk,Belarus,Europe,53.9,27.57,1995091,1067,Gamma+
+Brussels,Belgium,Europe,50.83,4.33,195546,1795,Alpha-
+Sarajevo,Bosnia and Herzegovina,Europe,43.87,18.42,275524,1462,Gamma-
+Sofia,Bulgaria,Europe,42.68,23.32,1205548,,High Sufficiency
+Zagreb,Croatia,Europe,45.8,16.0,767131,1094,High Sufficiency
+Nicosia,Cyprus,Europe,35.17,33.37,56848,,High Sufficiency
+Prague,Czechia,Europe,50.08,14.47,1397880,9th c.,High Sufficiency
+Copenhagen,Denmark,Europe,55.67,12.58,667099,1167,Beta+
+Tallinn,Estonia,Europe,59.43,24.72,457572,,High Sufficiency
+Tórshavn,Faroe Islands,Europe,62.01,-6.77,14038,10th c.,High Sufficiency
+Helsinki,Finland,Europe,60.17,24.93,694392,1550,Beta+
+Paris,France,Europe,48.87,2.33,2103778,4th c. BCE,Beta+
+Berlin,Germany,Europe,52.52,13.4,3913644,1244,Alpha-
+Gibraltar,Gibraltar,Europe,36.13,-5.35,34003,1704,High Sufficiency
+Athens,Greece,Europe,37.98,23.73,127315,1806,Gamma+
+St. Peter Port,Guernsey,Europe,49.45,-2.54,,,Sufficiency
+Budapest,Hungary,Europe,47.5,19.08,1685209,1873,Beta+
+Reykjavik,Iceland,Europe,64.15,-21.95,138772,1786,High Sufficiency
+Dublin,Ireland,Europe,53.32,-6.23,592713,841,Alpha-
+Douglas,Isle of Man,Europe,54.15,-4.48,26677,1670,High Sufficiency
+Rome,Italy,Europe,41.9,12.48,2748109,753 BCE,Alpha-
+Saint Helier,Jersey,Europe,49.18,-2.1,35822,,High Sufficiency
+Pristina,Kosovo,Europe,42.67,21.17,227466,,Gamma-
+Riga,Latvia,Europe,56.95,24.1,595053,1201,High Sufficiency
+Vaduz,Liechtenstein,Europe,47.13,9.52,5668,1150,High Sufficiency
+Vilnius,Lithuania,Europe,54.68,25.32,581475,13th c.,High Sufficiency
+Luxembourg,Luxembourg,Europe,49.6,6.12,137696,963,High Sufficiency
+Valletta,Malta,Europe,35.88,14.5,5197,1566,High Sufficiency
+Chișinău,Moldova,Europe,47.01,28.9,567038,1436,Gamma
+Monaco,Monaco,Europe,43.73,7.42,975,,High Sufficiency
+Podgorica,Montenegro,Europe,42.43,19.27,150977,,Gamma-
+Amsterdam,Netherlands,Europe,52.35,4.92,921468,1300,Alpha-
+Skopje,North Macedonia,Europe,42.0,21.43,422540,,High Sufficiency
+Oslo,Norway,Europe,59.92,10.75,717710,1048,High Sufficiency
+Warsaw,Poland,Europe,52.25,21.0,1862402,,Alpha-
+Lisbon,Portugal,Europe,38.72,-9.13,545796,,Alpha-
+Bucharest,Romania,Europe,44.43,26.1,1716961,1459,Gamma-
+Moscow,Russia,Europe,55.75,37.6,13274285,,Alpha
+City of San Marino,San Marino,Europe,43.94,12.45,3997,301,High Sufficiency
+Belgrade,Serbia,Europe,44.83,20.5,1197714,,Beta-
+Bratislava,Slovakia,Europe,48.15,17.12,480902,907,Gamma-
+Ljubljana,Slovenia,Europe,46.05,14.52,284293,,High Sufficiency
+Madrid,Spain,Europe,40.4,-3.68,3506730,,Alpha
+Longyearbyen,Svalbard and Jan Mayen,Europe,78.22,15.63,2417,1906,High Sufficiency
+Stockholm,Sweden,Europe,59.33,18.05,984748,1187,Alpha-
+Bern,Switzerland,Europe,46.92,7.47,8678,1191,High Sufficiency
+Kyiv,Ukraine,Europe,50.43,30.52,2952301,482,Beta
+London,United Kingdom,Europe,51.5,-0.08,8799728,47,Alpha++
+Vatican City,Vatican City,Europe,41.9,12.45,,1506,Sufficiency
+Mariehamn,Åland Islands,Europe,60.12,19.9,11812,1861,High Sufficiency
+Pago Pago,American Samoa,Oceania,-14.27,-170.7,3656,,High Sufficiency
+Canberra,Australia,Oceania,-35.27,149.13,473855,1913,Gamma-
+Melbourne,Australia,Oceania,-37.8136,144.9631,5350705,1835,Gamma-
+Sydney,Australia,Oceania,-33.8688,151.2093,5450496,1788,Alpha-
+Flying Fish Cove,Christmas Island,Oceania,-10.42,105.68,1355,1888,High Sufficiency
+West Island,Cocos (Keeling) Islands,Oceania,-12.17,96.83,147,,High Sufficiency
+Avarua,Cook Islands,Oceania,-21.2,-159.77,4798,,High Sufficiency
+Suva,Fiji,Oceania,-18.13,178.42,88271,,Sufficiency
+Papeetē,French Polynesia,Oceania,-17.53,-149.56,26654,1818,High Sufficiency
+Hagåtña,Guam,Oceania,13.48,144.75,943,,High Sufficiency
+South Tarawa,Kiribati,Oceania,1.33,172.98,63072,,Sufficiency
+Majuro,Marshall Islands,Oceania,7.1,171.38,30000,,High Sufficiency
+Palikir,Micronesia,Oceania,6.92,158.15,6227,,High Sufficiency
+Yaren,Nauru,Oceania,-0.55,166.92,747,,High Sufficiency
+Nouméa,New Caledonia,Oceania,-22.27,166.45,96082,1854,Sufficiency
+Auckland,New Zealand,Oceania,-36.8485,174.7633,1470100,1840,Beta-
+Wellington,New Zealand,Oceania,-41.3,174.78,16678,,Beta+
+Alofi,Niue,Oceania,-19.02,-169.92,575,,High Sufficiency
+Kingston,Norfolk Island,Oceania,-29.05,167.97,937700,1692,Gamma
+Saipan,Northern Mariana Islands,Oceania,15.2,145.75,,,Sufficiency
+Ngerulmud,Palau,Oceania,7.5,134.62,0,2006,Sufficiency
+Port Moresby,Papua New Guinea,Oceania,-9.45,147.18,317374,1873,Gamma
+Adamstown,Pitcairn Islands,Oceania,-25.07,-130.08,50,1790,High Sufficiency
+Apia,Samoa,Oceania,-13.82,-171.77,37708,1850,High Sufficiency
+Honiara,Solomon Islands,Oceania,-9.43,159.95,84520,,Sufficiency
+Fakaofo,Tokelau,Oceania,-9.38,-171.22,483,,High Sufficiency
+Nuku'alofa,Tonga,Oceania,-21.13,-175.2,23221,1795,High Sufficiency
+Funafuti,Tuvalu,Oceania,-8.52,179.22,6025,,High Sufficiency
+Port Vila,Vanuatu,Oceania,-17.73,168.32,49034,,High Sufficiency
+Mata-Utu,Wallis and Futuna,Oceania,-13.95,-171.93,1075,,High Sufficiency
