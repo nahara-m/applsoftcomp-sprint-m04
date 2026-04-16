@@ -8,6 +8,8 @@
 #     "matplotlib>=3.7",
 #     "scipy>=1.11",
 #     "ipython>=8.0",
+#     "drawdata>=0.3.6",
+#     "anywidget>=0.9",
 # ]
 # ///
 
@@ -22,23 +24,47 @@ def _(mo):
     mo.md(r"""
     # Semantic Axes: Intro Notebook
 
-    /// This notebook is **not** the deliverable. It is a worked example that walks
-    through the full pipeline you are expected to build in your own submission:
+    /// Note | This notebook is NOT the deliverable.
 
-    1. Load a list of terms
-    2. Build two semantic axes from opposing word sets
-    3. Score every term along both axes
-    4. Produce a 2D scatterplot that visually tells a story about the terms
-
-    Your assignment is described in the repo **`README.md`**. Read it before
-    you start coding. Pick one of the three case studies (or bring your own
-    data with ≥ 100 points) and build your own notebook / script from scratch.
+    It is a worked example that walks through the full pipeline you are expected to build in your own submission.
 
     Feel free to copy the `make_axis`, `score_words`, and `center_scores`
     functions from this notebook into your submission — they are the
     reference implementation.
+
+    ///
+
+    We'll learn **SemAxis** (An, Kwak, and Ahn. 2019 ACL), a tool to create interpretable window into embedding space.
+
+    > Jisun An, Haewoon Kwak, and Yong-Yeol Ahn. 2018. SemAxis: A Lightweight Framework to Characterize Domain-Specific Word Semantics Beyond Sentiment. In Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 2450–2461, Melbourne, Australia. Association for Computational Linguistics.
+
+
+    The original work uses word embeddings. Here we use **Sentence Transformers** to create word embeddings. Let us first load the sentence transformer model. We'll then build the concept of SemAxis and how we implement it using sentence transformers.
     """)
     return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ---
+    ## Setup — Load the embedding model
+
+    The sentence transformer is a small (~90 MB) pre-trained model that
+    maps any text to a 384-dimensional unit vector. The first call downloads
+    the weights; subsequent calls reuse them from disk.
+
+    **Copy this cell into your own submission** — you will need the same
+    model (or any other sentence transformer) to reproduce anything below.
+    """)
+    return
+
+
+@app.cell
+def _(SentenceTransformer):
+    model = SentenceTransformer("all-MiniLM-L6-v2")
+    model
+    return (model,)
 
 
 @app.cell(hide_code=True)
@@ -120,9 +146,206 @@ def _(mo):
     return
 
 
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    #### Try it in 2D
+
+    The math above lives in 384-dim space, which is impossible to draw.
+    The same operation in **2D** is easy to see. Use the widget below:
+
+    - **Draw two clusters** with the first two pens. The first color is
+      treated as the **− pole**, the second as the **+ pole**. If you
+      leave it blank, a preset appears below.
+    - The solid arrow is the **SemAxis**: the unit vector from the − pole
+      centroid to the + pole centroid.
+    - Dashed segments show each point's **projection** onto the axis.
+    - The right panel plots those projections as 1D scores.
+
+    Now imagine that the two colored clusters are your positive and negative
+    *pole words* — the picture on the right is exactly what `score_words`
+    returns in high-dimensional space.
+    """)
+    return
+
+
 @app.cell
-def _(plot_demo_axis):
-    plot_demo_axis()
+def _(ScatterWidget, mo):
+    widget = mo.ui.anywidget(ScatterWidget(width=520, height=380))
+    widget
+    return (widget,)
+
+
+@app.function
+def make_preset_clusters(n: int = 25, seed: int = 0):
+    """Two 2-D Gaussian blobs used when the widget is empty."""
+    import numpy as np
+    import pandas as pd
+
+    rng = np.random.default_rng(seed)
+    neg = rng.normal(loc=[140, 260], scale=[35, 28], size=(n, 2))
+    pos = rng.normal(loc=[360, 140], scale=[35, 28], size=(n, 2))
+    return pd.DataFrame(
+        {
+            "x": list(neg[:, 0]) + list(pos[:, 0]),
+            "y": list(neg[:, 1]) + list(pos[:, 1]),
+            "color": ["#1f77b4"] * n + ["#d62728"] * n,
+        }
+    )
+
+
+@app.function
+def plot_semaxis_2d(df):
+    """2-D scatter with the semaxis line + projections, and a 1-D strip plot.
+
+    df is expected to have columns x, y, color. The first two unique color
+    values are treated as the negative and positive poles respectively.
+    """
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    fig, (ax1, ax2) = plt.subplots(
+        1, 2, figsize=(12, 5), gridspec_kw={"width_ratios": [2, 1]}
+    )
+
+    colors = df["color"].unique().tolist() if len(df) else []
+    if len(colors) < 2:
+        for a in (ax1, ax2):
+            a.text(
+                0.5,
+                0.5,
+                "Draw points with two colors, or the preset will appear.",
+                ha="center",
+                va="center",
+                transform=a.transAxes,
+                color="#666",
+            )
+            a.set_axis_off()
+        return fig
+
+    neg_color, pos_color = colors[0], colors[1]
+    neg = df.loc[df["color"] == neg_color, ["x", "y"]].to_numpy()
+    pos = df.loc[df["color"] == pos_color, ["x", "y"]].to_numpy()
+    pts = df[["x", "y"]].to_numpy()
+    color_arr = df["color"].to_numpy()
+
+    neg_c = neg.mean(axis=0)
+    pos_c = pos.mean(axis=0)
+    v = pos_c - neg_c
+    v_len = float(np.linalg.norm(v))
+    if v_len < 1e-8:
+        for a in (ax1, ax2):
+            a.text(
+                0.5,
+                0.5,
+                "Cluster centers coincide — move the clusters apart.",
+                ha="center",
+                va="center",
+                transform=a.transAxes,
+                color="#666",
+            )
+            a.set_axis_off()
+        return fig
+    axis_unit = v / v_len
+    midpoint = (pos_c + neg_c) / 2
+
+    # Scalar projection onto axis (relative to midpoint).
+    t = (pts - midpoint) @ axis_unit
+    proj_xy = midpoint[None, :] + t[:, None] * axis_unit[None, :]
+
+    # ---- Left: 2D scene ----
+    # Axis as an arrow pointing from − to +, extended past both centers.
+    span = np.array([-1.4, 1.4]) * v_len
+    ep = midpoint[None, :] + span[:, None] * axis_unit[None, :]
+    ax1.annotate(
+        "",
+        xy=ep[1],
+        xytext=ep[0],
+        arrowprops=dict(arrowstyle="->", color="#333", lw=2),
+        zorder=1,
+    )
+
+    # Dashed projection lines.
+    for i in range(len(pts)):
+        ax1.plot(
+            [pts[i, 0], proj_xy[i, 0]],
+            [pts[i, 1], proj_xy[i, 1]],
+            color="#bbb",
+            linestyle="--",
+            linewidth=0.7,
+            zorder=1,
+        )
+
+    # Points.
+    for c in (neg_color, pos_color):
+        sub = df[df["color"] == c]
+        ax1.scatter(
+            sub["x"],
+            sub["y"],
+            c=c,
+            s=55,
+            edgecolor="white",
+            linewidth=0.6,
+            zorder=3,
+        )
+
+    # Cluster centroids highlighted as hollow rings.
+    for c_rgb, center, lbl in [
+        (neg_color, neg_c, "− pole centroid"),
+        (pos_color, pos_c, "+ pole centroid"),
+    ]:
+        ax1.scatter(
+            *center,
+            s=380,
+            marker="o",
+            facecolor="none",
+            edgecolor=c_rgb,
+            linewidth=2.5,
+            zorder=4,
+            label=lbl,
+        )
+
+    ax1.set_aspect("equal", adjustable="datalim")
+    ax1.set_xlabel("x")
+    ax1.set_ylabel("y")
+    ax1.set_title("2D points, SemAxis direction, and projections")
+    ax1.legend(loc="best", fontsize=8, frameon=False)
+
+    # ---- Right: 1D projected scores ----
+    rng = np.random.default_rng(0)
+    jitter = rng.uniform(-0.35, 0.35, size=len(t))
+    for c in (neg_color, pos_color):
+        mask = color_arr == c
+        ax2.scatter(
+            t[mask],
+            jitter[mask],
+            c=c,
+            s=55,
+            edgecolor="white",
+            linewidth=0.6,
+        )
+    ax2.axvline(0, color="#444", linewidth=1)
+    ax2.set_ylim(-1.2, 1.2)
+    ax2.set_yticks([])
+    ax2.set_xlabel("projection onto SemAxis  →")
+    ax2.set_title("1D projected scores")
+    for side in ("left", "top", "right"):
+        ax2.spines[side].set_visible(False)
+
+    fig.tight_layout()
+    return fig
+
+
+@app.cell
+def _(pd, widget):
+    # Read the drawn data reactively. Fall back to the preset when empty.
+    _ = widget.value  # noqa: register widget as reactivity dependency
+    try:
+        drawn = widget.data_as_pandas
+    except Exception:
+        drawn = pd.DataFrame()
+    df_demo = drawn if (not drawn.empty and drawn["color"].nunique() >= 2) else make_preset_clusters()
+    plot_semaxis_2d(df_demo)
     return
 
 
@@ -188,8 +411,7 @@ def _(mo):
 @app.cell
 def _(pd):
     df = pd.read_csv("data/universities.csv")
-    print(f"{len(df)} universities across {df['type'].nunique()} types "
-          f"and {df['region'].nunique()} regions.")
+    print(f"{len(df)} universities across {df['type'].nunique()} types and {df['region'].nunique()} regions.")
     df.head()
     return (df,)
 
@@ -219,16 +441,12 @@ def _(mo):
 @app.cell
 def _(df, model):
     # Axis 1 — research intensity vs teaching focus
-    axis1_pos = ["research university", "PhD program", "laboratory",
-                 "publications", "grant funding", "doctoral"]
-    axis1_neg = ["teaching college", "undergraduate focus", "mentoring",
-                 "small classes", "community access"]
+    axis1_pos = ["research university", "PhD program", "laboratory", "publications", "grant funding", "doctoral"]
+    axis1_neg = ["teaching college", "undergraduate focus", "mentoring", "small classes", "community access"]
 
     # Axis 2 — religious affiliation vs secular
-    axis2_pos = ["Catholic", "Christian", "religious affiliation",
-                 "faith-based", "seminary"]
-    axis2_neg = ["secular", "public research", "state university",
-                 "non-religious"]
+    axis2_pos = ["Catholic", "Christian", "religious affiliation", "faith-based", "seminary"]
+    axis2_neg = ["secular", "public research", "state university", "non-religious"]
 
     ax1 = make_axis(axis1_pos, axis1_neg, model)
     ax2 = make_axis(axis2_pos, axis2_neg, model)
@@ -268,80 +486,81 @@ def _(mo):
 @app.cell
 def _(df_scored, plt):
     OKABE_ITO = {
-        "Ivy":              "#E69F00",
-        "Elite Private":    "#D55E00",
-        "Tech":             "#0072B2",
-        "Public Flagship":  "#009E73",
-        "Public Regional":  "#56B4E9",
-        "Liberal Arts":     "#CC79A7",
-        "HBCU":             "#F0E442",
-        "Religious":        "#999999",
-        "Womens":           "#AA4499",
-        "Service Academy":  "#332288",
-        "For-Profit":       "#882255",
-        "Community College":"#117733",
-        "Tribal":           "#44AA99",
+        "Ivy": "#E69F00",
+        "Elite Private": "#D55E00",
+        "Tech": "#0072B2",
+        "Public Flagship": "#009E73",
+        "Public Regional": "#56B4E9",
+        "Liberal Arts": "#CC79A7",
+        "HBCU": "#F0E442",
+        "Religious": "#999999",
+        "Womens": "#AA4499",
+        "Service Academy": "#332288",
+        "For-Profit": "#882255",
+        "Community College": "#117733",
+        "Tribal": "#44AA99",
         "Specialized Arts": "#6699CC",
     }
     REGION_MARKERS = {
         "Northeast": "o",
-        "South":     "s",
-        "Midwest":   "^",
-        "West":      "D",
+        "South": "s",
+        "Midwest": "^",
+        "West": "D",
     }
 
     fig, ax = plt.subplots(figsize=(11, 8))
 
     for region, marker in REGION_MARKERS.items():
         for utype, color in OKABE_ITO.items():
-            sub = df_scored[(df_scored["region"] == region)
-                            & (df_scored["type"] == utype)]
+            sub = df_scored[(df_scored["region"] == region) & (df_scored["type"] == utype)]
             if len(sub) == 0:
                 continue
-            ax.scatter(sub["x"], sub["y"],
-                       c=color, marker=marker, s=70,
-                       edgecolor="white", linewidth=0.6, alpha=0.9)
+            ax.scatter(sub["x"], sub["y"], c=color, marker=marker, s=70, edgecolor="white", linewidth=0.6, alpha=0.9)
 
     ax.axhline(0, color="#444", linewidth=0.8, zorder=0)
     ax.axvline(0, color="#444", linewidth=0.8, zorder=0)
-    ax.set_xlabel("← teaching-focused          research-intensive →",
-                  fontsize=11)
+    ax.set_xlabel("← teaching-focused          research-intensive →", fontsize=11)
     ax.set_ylabel("← secular                  religious →", fontsize=11)
-    ax.set_title("U.S. universities in a 2D semantic space",
-                 fontsize=13, pad=12)
+    ax.set_title("U.S. universities in a 2D semantic space", fontsize=13, pad=12)
 
     # Annotate a few extremes to guide the reader
     for _, row in df_scored.nlargest(3, "x").iterrows():
-        ax.annotate(row["name"], (row["x"], row["y"]),
-                    fontsize=8, xytext=(4, 2), textcoords="offset points")
+        ax.annotate(row["name"], (row["x"], row["y"]), fontsize=8, xytext=(4, 2), textcoords="offset points")
     for _, row in df_scored.nsmallest(3, "x").iterrows():
-        ax.annotate(row["name"], (row["x"], row["y"]),
-                    fontsize=8, xytext=(4, 2), textcoords="offset points")
+        ax.annotate(row["name"], (row["x"], row["y"]), fontsize=8, xytext=(4, 2), textcoords="offset points")
     for _, row in df_scored.nlargest(2, "y").iterrows():
-        ax.annotate(row["name"], (row["x"], row["y"]),
-                    fontsize=8, xytext=(4, 2), textcoords="offset points")
+        ax.annotate(row["name"], (row["x"], row["y"]), fontsize=8, xytext=(4, 2), textcoords="offset points")
 
     # Two legends: color = type, shape = region
     from matplotlib.lines import Line2D
+
     type_handles = [
-        Line2D([], [], marker="o", linestyle="",
-               markerfacecolor=c, markeredgecolor="white",
-               markersize=8, label=t)
+        Line2D([], [], marker="o", linestyle="", markerfacecolor=c, markeredgecolor="white", markersize=8, label=t)
         for t, c in OKABE_ITO.items()
     ]
     region_handles = [
-        Line2D([], [], marker=m, linestyle="",
-               markerfacecolor="#777", markeredgecolor="white",
-               markersize=8, label=r)
+        Line2D([], [], marker=m, linestyle="", markerfacecolor="#777", markeredgecolor="white", markersize=8, label=r)
         for r, m in REGION_MARKERS.items()
     ]
-    leg1 = ax.legend(handles=type_handles, title="Type",
-                     loc="upper left", bbox_to_anchor=(1.02, 1.0),
-                     fontsize=8, title_fontsize=9, frameon=False)
+    leg1 = ax.legend(
+        handles=type_handles,
+        title="Type",
+        loc="upper left",
+        bbox_to_anchor=(1.02, 1.0),
+        fontsize=8,
+        title_fontsize=9,
+        frameon=False,
+    )
     ax.add_artist(leg1)
-    ax.legend(handles=region_handles, title="Region",
-              loc="upper left", bbox_to_anchor=(1.02, 0.45),
-              fontsize=8, title_fontsize=9, frameon=False)
+    ax.legend(
+        handles=region_handles,
+        title="Region",
+        loc="upper left",
+        bbox_to_anchor=(1.02, 0.45),
+        fontsize=8,
+        title_fontsize=9,
+        frameon=False,
+    )
 
     plt.tight_layout()
     fig
@@ -404,46 +623,9 @@ def _():
     import pandas as pd
     import matplotlib.pyplot as plt
     from sentence_transformers import SentenceTransformer
+    from drawdata import ScatterWidget
 
-    return SentenceTransformer, mo, np, pd, plt
-
-
-@app.cell(hide_code=True)
-def _(SentenceTransformer):
-    model = SentenceTransformer("all-MiniLM-L6-v2")
-    return (model,)
-
-
-@app.cell(hide_code=True)
-def _(model, np, plt):
-    def plot_demo_axis():
-        _pos = ["excellent", "wonderful", "great", "fantastic"]
-        _neg = ["terrible", "awful", "horrible", "dreadful"]
-        _p = model.encode(_pos, normalize_embeddings=True).mean(0)
-        _n = model.encode(_neg, normalize_embeddings=True).mean(0)
-        _v = _p - _n
-        _ax = _v / (np.linalg.norm(_v) + 1e-10)
-        _words = [
-            "sunshine", "disaster", "kindness", "tragedy",
-            "victory", "failure", "celebration", "crisis",
-            "gift", "grief", "progress", "collapse",
-        ]
-        _scores = model.encode(_words, normalize_embeddings=True) @ _ax
-        _ord = np.argsort(_scores)
-        _fig, _a = plt.subplots(figsize=(7, 4))
-        _a.barh(
-            [_words[i] for i in _ord],
-            _scores[_ord],
-            color=["#D55E00" if v < 0 else "#0072B2" for v in _scores[_ord]],
-        )
-        _a.axvline(0, color="black", linewidth=0.8)
-        _a.set_xlabel("← negative          positive →")
-        _a.set_title("Sentiment axis  (demo)")
-        _a.set_xlim(-0.8, 0.8)
-        plt.tight_layout()
-        return _fig
-
-    return (plot_demo_axis,)
+    return ScatterWidget, SentenceTransformer, mo, np, pd, plt
 
 
 if __name__ == "__main__":
