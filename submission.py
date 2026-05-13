@@ -12,6 +12,7 @@
 #     "anywidget>=0.9",
 #     "seaborn==0.13.2",
 #     "altair==6.0.0",
+#     "vl-convert-python",
 # ]
 # ///
 
@@ -35,19 +36,6 @@ def _(SentenceTransformer):
     model = SentenceTransformer("all-mpnet-base-v2")  # all-MiniLM-L6-v2 if you want faster but noisier results
     model
     return (model,)
-
-
-@app.cell(hide_code=True)
-def _(pd, widget):
-    # Read the drawn data reactively. Fall back to the preset when empty.
-    _ = widget.value  # noqa: register widget as reactivity dependency
-    try:
-        drawn = widget.data_as_pandas
-    except Exception:
-        drawn = pd.DataFrame()
-    df_demo = drawn if (not drawn.empty and drawn["color"].nunique() >= 2) else make_preset_clusters()
-    plot_semaxis_2d(df_demo)
-    return
 
 
 @app.cell(hide_code=True)
@@ -170,11 +158,15 @@ def _(make_axis, model):
         "urban",
         "big city",
         "downtown",
+        "center city",
+        "metropolitan"
     ]
     axis1_neg = [
         "small town",
         "suburban",
         "rural",
+        "isolated",
+        "college town"
     ]
     axis_setting = make_axis(axis1_pos, axis1_neg, model)
     return (axis_setting,)
@@ -305,6 +297,8 @@ def _(alt, color_by, df_scored, mo):
         .configure_legend(labelFontSize=11, titleFontSize=12)
         .interactive()  # pan + zoom
     )
+
+    chart.save('figs/uni_semaxis.png')
 
     # Stack the dropdown directly above the chart so it is always visible.
     mo.vstack([color_by, chart])
