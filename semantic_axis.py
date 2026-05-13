@@ -85,7 +85,7 @@ df_scored_1 = uni_df.assign(x=x, y=y)
 fig_1 = px.scatter(
     df_scored_1,
     x="x", y="y",
-    color="type",
+    color="region",
     symbol="type",
     color_discrete_sequence=px.colors.qualitative.Safe,
     hover_name="name",
