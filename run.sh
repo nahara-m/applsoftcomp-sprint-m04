@@ -44,6 +44,11 @@ mkdir -p data figures
 # is just for reproducibility — `marimo run submission.py ...` is fine
 # too if marimo is already installed.
 # ---------------------------------------------------------------------------
-uvx marimo run --sandbox submission.py --output figures/scatter.png
 
-echo "Done. See figures/scatter.png"
+uvx marimo run --sandbox submission.py --output figs/uni_semaxis.png
+
+uv run python semantic_axis.py # plotly viz saved as html
+
+
+echo "Done. See plotly viz in figs/uni_semaxis.png"
+
